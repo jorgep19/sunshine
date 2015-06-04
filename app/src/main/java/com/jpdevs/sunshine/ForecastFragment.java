@@ -26,16 +26,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class ForecastFragment extends Fragment {
-    private static final String[] WEEK_FORECAST = new String[] {
-            "Today - Sunny - 88/63",
-            "Tomorrow - Foggy - 70/46",
-            "Weds - Cloudy - 72/63",
-            "Thurs - Rainy - 64/51",
-            "Fri - Foggy - 70/46",
-            "Sat - Sunny - 76/68"
-    };
+
+    private ArrayAdapter<String> mListAdapter;
 
     public ForecastFragment() {}
 
@@ -65,17 +60,19 @@ public class ForecastFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(new ArrayAdapter<>(
+        ArrayList<String> data = new ArrayList<>();
+        mListAdapter = new ArrayAdapter<>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                WEEK_FORECAST));
+                data);
+        listView.setAdapter(mListAdapter);
 
         return rootView;
     }
 
-    public static class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
-        private static final String TAG = FetchWeatherTask.class.getName();
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+        private final String TAG = FetchWeatherTask.class.getName();
 
         private static final String WEATHER_DOMAIN = "api.openweathermap.org";
         private static final String WEATHER_ENDPOINT = "/data/2.5/forecast/daily";
@@ -125,7 +122,7 @@ public class ForecastFragment extends Fragment {
 
                 URL url = new URL(builder.build().toString());
 
-                Log.v(TAG, "The url created was: " + url.toString());
+//                Log.v(TAG, "The url created was: " + url.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -173,11 +170,11 @@ public class ForecastFragment extends Fragment {
                 }
             }
 
-            Log.v(TAG, "The data received was: " + forecastJsonStr);
+//            Log.v(TAG, "The data received was: " + forecastJsonStr);
 
             String[] itemContents = new String[0];
             try {
-                getWeatherDataFromJSON(forecastJsonStr, 7);
+                itemContents = getWeatherDataFromJSON(forecastJsonStr, 7);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -185,6 +182,13 @@ public class ForecastFragment extends Fragment {
             return itemContents;
         }
 
+        @Override
+        protected void onPostExecute(String[] strings) {
+            if (mListAdapter != null) {
+                mListAdapter.clear();
+                mListAdapter.addAll(strings);
+            }
+        }
 
         /**
          * The date/time conversion code is going to be moved outside the synctask later,
@@ -278,11 +282,12 @@ public class ForecastFragment extends Fragment {
                 resultsStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultsStrs) {
-                Log.v(TAG, "Forecast entry: " + s);
-            }
+//            for (String s : resultsStrs) {
+//                Log.v(TAG, "Forecast entry: " + s);
+//            }
 
             return resultsStrs;
         }
     }
+
 }
