@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">Sunshine</string>
-    
-    <string name="hello_world">Hello world!</string>
 
+    <!-- menu options -->
     <string name="refresh" translatable="false">Refresh</string>
+    <string name="see_location">See Location</string>
     <string name="action_settings">Settings</string>
+
+    <!-- activity titles -->
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
 

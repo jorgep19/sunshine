@@ -53,8 +53,27 @@ public class ForecastFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id== R.id.action_refresh) {
+        if (id == R.id.action_refresh) {
             updateWeather();
+            return true;
+        }
+
+        if (id == R.id.action_see_location) {
+            SharedPreferences prefs = getActivity().getSharedPreferences(
+                    SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
+                    Context.MODE_PRIVATE);
+
+            String zipCode = prefs.getString(
+                    getString(R.string.pref_location_key),
+                    getString(R.string.location_pref_default_value));
+            Uri uri = Uri.parse("geo:0,0?q=" + zipCode);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            }
+
             return true;
         }
 
@@ -316,7 +335,7 @@ public class ForecastFragment extends Fragment {
                 // if prefs is imperial units conver temperature from Metric/Celsius to Imperial/Fahrenheit
                 if (prefs.getString(
                         getString(R.string.pref_unit_key),
-                        getString(R.string.location_pref_default_value)).equals(getString(R.string.imperial))) {
+                        getString(R.string.location_pref_default_value)).equals(getString(R.string.imperial_value))) {
                     high = high * 1.8 + 32;
                     low = low * 1.8 + 32;
                 }

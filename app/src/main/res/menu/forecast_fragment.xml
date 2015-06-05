@@ -7,6 +7,11 @@
         android:orderInCategory="1"
         app:showAsAction="never" />
 
+    <item android:id="@+id/action_see_location"
+        android:title="@string/see_location"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
