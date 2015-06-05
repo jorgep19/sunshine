@@ -14,11 +14,9 @@
     <string name="location_pref_default_value" translatable="false">33178</string>
     <string name="temperature_units">Temperature Units</string>
     <string name="pref_unit_key" translatable="false">unit_pref</string>
-    <string name="metric">Metric</string>
-    <string name="imperial">Imperial</string>
-    <string-array name="temperature_units">
-        <item>@string/metric</item>
-        <item>@string/imperial</item>
-    </string-array>
+    <string name="metric_value" translatable="false">Metric</string>
+    <string name="imperial_value" translatable="false">Imperial</string>
+    <string name="metric_label">Metric</string>
+    <string name="imperial_label">Imperial</string>
 
 </resources>
