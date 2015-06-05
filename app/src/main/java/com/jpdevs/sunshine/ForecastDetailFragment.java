@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class ForecastDetailFragment extends Fragment {
+    private static final String TAG = ForecastDetailFragment.class.getName();
     private static final String FORECAST_KEY = "forecast_data";
+    private static final String SHARE_MSG_FORMAT = "%s #SunshineApp";
 
     public static ForecastDetailFragment newInstance(String forecast) {
         ForecastDetailFragment fragment = new ForecastDetailFragment();
@@ -54,7 +56,8 @@ public class ForecastDetailFragment extends Fragment {
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getArguments().getString(FORECAST_KEY) + " #SunshineApp.");
+        String shareMsg = String.format(SHARE_MSG_FORMAT, getArguments().getString(FORECAST_KEY));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMsg);
 
         // if a reference is kept this can be called again to modify the share intent
         shareActionProvider.setShareIntent(shareIntent);
