@@ -54,16 +54,17 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id== R.id.action_refresh) {
-            SharedPreferences prefs = getActivity().getSharedPreferences(
-                    SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
-                    Context.MODE_PRIVATE);
-
-            new FetchWeatherTask().execute(prefs.getString(
-                    getString(R.string.pref_location_key),
-                    getString(R.string.location_pref_default_value)));
+            updateWeather();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
     }
 
     @Override
@@ -88,6 +89,16 @@ public class ForecastFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void updateWeather() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(
+                SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
+                Context.MODE_PRIVATE);
+
+        new FetchWeatherTask().execute(prefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.location_pref_default_value)));
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
