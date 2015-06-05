@@ -1,6 +1,8 @@
 package com.jpdevs.sunshine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,7 +54,13 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id== R.id.action_refresh) {
-            new FetchWeatherTask().execute("33178");
+            SharedPreferences prefs = getActivity().getSharedPreferences(
+                    SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
+                    Context.MODE_PRIVATE);
+
+            new FetchWeatherTask().execute(prefs.getString(
+                    getString(R.string.pref_location_key),
+                    getString(R.string.location_pref_default_value)));
         }
 
         return super.onOptionsItemSelected(item);

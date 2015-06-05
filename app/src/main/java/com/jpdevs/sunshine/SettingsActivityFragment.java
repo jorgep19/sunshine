@@ -1,5 +1,7 @@
 package com.jpdevs.sunshine;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -8,13 +10,15 @@ import android.preference.PreferenceManager;
 public class SettingsActivityFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
 
-    public SettingsActivityFragment() {
-    }
+    public static final String SUNSHINE_SETTINGS_PREFS = "sunshine_settings";
+
+    public SettingsActivityFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getPreferenceManager().setSharedPreferencesName(SUNSHINE_SETTINGS_PREFS);
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
     }
@@ -39,7 +43,7 @@ public class SettingsActivityFragment extends PreferenceFragment
     }
 
     /**
-     * Attaches a listener so the summary is alwas upted with the preference value.
+     * Attaches a listener so the summary is always updated with the preference value.
      * Also fires the listener once, to initialize the summary (so it shows up before the value
      * is changed.)
      */
@@ -49,10 +53,11 @@ public class SettingsActivityFragment extends PreferenceFragment
 
         // Trigger the listener immediately with the preference's
         // current value.
-        onPreferenceChange(
-                pref,
-                PreferenceManager
-                        .getDefaultSharedPreferences(pref.getContext())
-                        .getString(pref.getKey(), ""));
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(
+                SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
+                Context.MODE_PRIVATE);
+
+        onPreferenceChange(pref, prefs.getString(pref.getKey(), ""));
     }
 }
