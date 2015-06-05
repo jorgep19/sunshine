@@ -6,7 +6,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 public class SettingsActivityFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
 
@@ -21,6 +21,7 @@ public class SettingsActivityFragment extends PreferenceFragment
         getPreferenceManager().setSharedPreferencesName(SUNSHINE_SETTINGS_PREFS);
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
     }
 
     @Override

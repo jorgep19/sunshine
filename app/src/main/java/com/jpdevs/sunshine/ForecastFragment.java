@@ -308,6 +308,19 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
+
+                SharedPreferences prefs = getActivity().getSharedPreferences(
+                        SettingsActivityFragment.SUNSHINE_SETTINGS_PREFS,
+                        Context.MODE_PRIVATE);
+
+                // if prefs is imperial units conver temperature from Metric/Celsius to Imperial/Fahrenheit
+                if (prefs.getString(
+                        getString(R.string.pref_unit_key),
+                        getString(R.string.location_pref_default_value)).equals(getString(R.string.imperial))) {
+                    high = high * 1.8 + 32;
+                    low = low * 1.8 + 32;
+                }
+
                 highAndLow = formatHighLows(high, low);
                 resultsStrs[i] = day + " - " + description + " - " + highAndLow;
             }
