@@ -1,5 +1,6 @@
 package com.jpdevs.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -67,6 +69,14 @@ public class ForecastFragment extends Fragment {
                 R.id.list_item_forecast_textview,
                 data);
         listView.setAdapter(mListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ForecastDetailActivity.class)
+                        .putExtra(ForecastDetailActivity.FORECAST, mListAdapter.getItem(position));
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
@@ -289,5 +299,4 @@ public class ForecastFragment extends Fragment {
             return resultsStrs;
         }
     }
-
 }
