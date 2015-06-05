@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ForecastFragment extends Fragment {
+    private static final String TAG = ForecastFragment.class.getName();
 
     private ArrayAdapter<String> mListAdapter;
 
@@ -66,12 +67,16 @@ public class ForecastFragment extends Fragment {
             String zipCode = prefs.getString(
                     getString(R.string.pref_location_key),
                     getString(R.string.location_pref_default_value));
-            Uri uri = Uri.parse("geo:0,0?q=" + zipCode);
+            Uri uri = Uri.parse("geo:0,0").buildUpon()
+                    .appendQueryParameter("q", zipCode)
+                    .build();
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(uri);
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivity(intent);
+            } else {
+                Log.d(TAG, "Couldn't find app to manage intent to find " + zipCode + "on map.");
             }
 
             return true;
